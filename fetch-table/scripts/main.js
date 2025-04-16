@@ -1,4 +1,4 @@
-import { getAll } from './db.js';
+import { getAll, remove } from './db.js';
 
 const table = document.querySelector('table.table');
 
@@ -32,6 +32,37 @@ const generateTable = (tableData = []) => {
             const td = document.createElement('td');
             td.innerText = row[k];
             tr.appendChild(td);
+        });
+
+        // TD a gomboknak
+        const td = document.createElement('td');
+        tr.appendChild(td);
+
+        // Gombcsoport
+        const btnGroup = document.createElement('div');
+        btnGroup.classList.add('btn-group');
+        td.appendChild(btnGroup);
+
+        // Szerkesztés gomb
+        const editBtn = document.createElement('button');
+        btnGroup.appendChild(editBtn);
+        editBtn.classList.add('btn', 'btn-info');
+        editBtn.innerHTML = '<i class="fa fa-pencil"></i>';
+        editBtn.addEventListener('click', () => {
+            alert(JSON.stringify(row));
+        });
+
+        // Szerkesztés gomb
+        const deleletBtn = document.createElement('button');
+        btnGroup.appendChild(deleletBtn);
+        deleletBtn.classList.add('btn', 'btn-danger');
+        deleletBtn.innerHTML = '<i class="fa fa-trash"></i>';
+        deleletBtn.addEventListener('click', async () => {
+            if ( confirm('Biztos törölni akarja a sort?') ) {
+                await remove(row.id);
+                tr.parentElement.removeChild(tr);
+                alert(`A ${row.id} sor törölve.`);
+            }
         });
     });
 
